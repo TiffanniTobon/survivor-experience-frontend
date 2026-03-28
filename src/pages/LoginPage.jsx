@@ -53,7 +53,11 @@ export default function LoginPage() {
           form.password,
         );
         login(token, user);
-        navigate(user.role === "admin" ? "/admin" : "/classes");
+        setToast({ message: `¡Bienvenido, ${user.name}!`, type: "success" });
+        setTimeout(() => {
+          setToast(null);
+          navigate(user.role === "admin" ? "/admin" : "/classes");
+        }, 1500);
       }
     } catch (err) {
       setError(

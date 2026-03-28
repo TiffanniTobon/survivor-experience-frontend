@@ -4,8 +4,8 @@ import ProtectedRoute from "@/routes/ProtectedRoute";
 import LoginPage from "@/pages/LoginPage";
 
 // Placeholders — los crearemos en próximos pasos
-const ClassesPage = () => <div className="text-white p-8">Clases (próximo)</div>;
-const AdminPage   = () => <div className="text-white p-8">Admin (próximo)</div>;
+import ClassesPage from "@/pages/ClassesPage";
+const AdminPage = () => <div className="text-white p-8">Admin (próximo)</div>;
 
 export default function App() {
   return (
