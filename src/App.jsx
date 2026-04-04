@@ -2,10 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import LoginPage from "@/pages/LoginPage";
-
-// Placeholders — los crearemos en próximos pasos
+import AdminPage from "@/pages/AdminPage";
 import ClassesPage from "@/pages/ClassesPage";
-const AdminPage = () => <div className="text-white p-8">Admin (próximo)</div>;
 
 export default function App() {
   return (
