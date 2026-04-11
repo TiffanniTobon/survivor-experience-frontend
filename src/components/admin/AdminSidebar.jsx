@@ -9,7 +9,7 @@ const NAV_ITEMS = [
 ];
 
 // Recibe onCreateClass para abrir el modal desde AdminPage
-export default function AdminSidebar({ onCreateClass }) {
+export default function AdminSidebar({ onCreateClass, disableCreate }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -100,6 +100,7 @@ export default function AdminSidebar({ onCreateClass }) {
       >
         <button
           onClick={onCreateClass}
+          disabled={disableCreate}
           style={{
             background: "#00e5ff",
             border: "none",
@@ -112,6 +113,8 @@ export default function AdminSidebar({ onCreateClass }) {
             letterSpacing: 1,
             cursor: "pointer",
             width: "100%",
+            opacity: disableCreate ? 0.3 : 1,
+            cursor: disableCreate ? "not-allowed" : "pointer",
           }}
         >
           + CREAR CLASE

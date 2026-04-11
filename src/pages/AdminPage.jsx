@@ -35,6 +35,7 @@ export default function AdminPage() {
   const monday = getMondayOfWeek(weekOffset);
   const weekDays = getWeekDays(monday);
   const selectedDate = weekDays[selectedDayIndex];
+  const isSelectedDayPast = toISODate(selectedDate) < toISODate(new Date());
 
   // ─── FETCH ────────────────────────────────────────────────────────────
   const fetchClasses = async () => {
@@ -113,7 +114,11 @@ export default function AdminPage() {
         }}
       >
         {/* Sidebar — solo desktop */}
-        <AdminSidebar onCreateClass={handleOpenCreate} />
+
+        <AdminSidebar
+          onCreateClass={handleOpenCreate}
+          disableCreate={isSelectedDayPast}
+        />
 
         <main
           style={{
@@ -202,7 +207,11 @@ export default function AdminPage() {
 
       {/* Barra inferior — solo móvil */}
       {isMobile && (
-        <AdminBottomBar activeTab="clases" onCreateClass={handleOpenCreate} />
+        <AdminBottomBar
+          activeTab="clases"
+          onCreateClass={handleOpenCreate}
+          disableCreate={isSelectedDayPast}
+        />
       )}
 
       <ClassModal

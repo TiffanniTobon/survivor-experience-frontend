@@ -206,36 +206,40 @@ function ClassRow({ cls, onEdit, onDelete, isLast }) {
         {status}
       </span>
       <div style={{ display: "flex", gap: 8, justifyContent: "flex-start" }}>
-        <button
-          onClick={() => onEdit(cls)}
-          style={{
-            background: "#0a2a2a",
-            border: "1px solid #1a4a4a",
-            color: "#00e5ff",
-            borderRadius: 4,
-            padding: "4px 10px",
-            cursor: "pointer",
-            fontFamily: "'Rajdhani', sans-serif",
-            fontSize: 12,
-          }}
-        >
-          Editar
-        </button>
-        <button
-          onClick={() => onDelete(cls.id)}
-          style={{
-            background: "#2a0a0a",
-            border: "1px solid #4a1a1a",
-            color: "#ff4444",
-            borderRadius: 4,
-            padding: "4px 10px",
-            cursor: "pointer",
-            fontFamily: "'Rajdhani', sans-serif",
-            fontSize: 12,
-          }}
-        >
-          Eliminar
-        </button>
+        {status !== "Finalizada" && (
+          <>
+            <button
+              onClick={() => onEdit(cls)}
+              style={{
+                background: "#0a2a2a",
+                border: "1px solid #1a4a4a",
+                color: "#00e5ff",
+                borderRadius: 4,
+                padding: "4px 10px",
+                cursor: "pointer",
+                fontFamily: "'Rajdhani', sans-serif",
+                fontSize: 12,
+              }}
+            >
+              Editar
+            </button>
+            <button
+              onClick={() => onDelete(cls.id)}
+              style={{
+                background: "#2a0a0a",
+                border: "1px solid #4a1a1a",
+                color: "#ff4444",
+                borderRadius: 4,
+                padding: "4px 10px",
+                cursor: "pointer",
+                fontFamily: "'Rajdhani', sans-serif",
+                fontSize: 12,
+              }}
+            >
+              Eliminar
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

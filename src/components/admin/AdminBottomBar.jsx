@@ -35,7 +35,11 @@ const IconSalir = () => (
 // Recibe:
 // activeTab    → pestaña activa: "clases" | "cycling" | "cardio"
 // onCreateClass → abre el modal de crear clase
-export default function AdminBottomBar({ activeTab, onCreateClass }) {
+export default function AdminBottomBar({
+  activeTab,
+  onCreateClass,
+  disableCreate,
+}) {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -96,7 +100,7 @@ export default function AdminBottomBar({ activeTab, onCreateClass }) {
 
       {/* Crear clase — botón destacado en cyan */}
       <button
-        onClick={onCreateClass}
+        onClick={disableCreate ? undefined : onCreateClass}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -111,6 +115,8 @@ export default function AdminBottomBar({ activeTab, onCreateClass }) {
           fontFamily: "'Rajdhani', sans-serif",
           fontSize: 10,
           letterSpacing: 1,
+          opacity: disableCreate ? 0.3 : 1,
+          cursor: disableCreate ? "not-allowed" : "pointer",
         }}
       >
         {/* Círculo destacado para el botón de crear */}

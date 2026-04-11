@@ -83,6 +83,7 @@ export default function WeekNavigator({
         {weekDays.map((day, i) => {
           const isSelected = i === selectedDayIndex;
           const hasClasses = classes.some((c) => c.date === toISODate(day));
+          const isPast = toISODate(day) < toISODate(new Date());
 
           return (
             <button
@@ -92,13 +93,23 @@ export default function WeekNavigator({
                 flex: 1,
                 padding: isMobile ? "8px 4px" : "12px 8px",
                 borderRadius: 8,
-                border: isSelected ? "1px solid #00e5ff" : "1px solid #0a2a2a",
-                background: isSelected ? "#00e5ff" : "#060f0f",
                 color: isSelected
                   ? "#040d0d"
-                  : hasClasses
-                    ? "#00e5ff"
-                    : "#336666",
+                  : isPast
+                    ? "#1a3a3a"
+                    : hasClasses
+                      ? "#00e5ff"
+                      : "#336666",
+                border: isSelected
+                  ? "1px solid #00e5ff"
+                  : isPast
+                    ? "1px solid #061616"
+                    : "1px solid #0a2a2a",
+                background: isSelected
+                  ? "#00e5ff"
+                  : isPast
+                    ? "#040d0d"
+                    : "#060f0f",
                 cursor: "pointer",
                 fontFamily: "'Orbitron', sans-serif",
                 fontSize: isMobile ? 8 : 10,

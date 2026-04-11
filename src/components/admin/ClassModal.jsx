@@ -69,6 +69,34 @@ export default function ClassModal({ isOpen, onClose, onSave, initial }) {
     setLoading(true);
     setError("");
     try {
+      // Validación de fecha y hora
+      const now = new Date();
+      const selectedDate = new Date(form.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // La fecha no puede ser anterior a hoy
+      if (selectedDate < today) {
+        setError("No puedes crear clases en días pasados.");
+        return;
+      }
+
+      // La hora de inicio debe ser al menos 1 hora mayor a la hora actual
+      const startDateTime = new Date(`${form.date}T${form.start_time}`);
+      const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+
+      if (startDateTime < oneHourFromNow) {
+        setError(
+          "La hora de inicio debe ser al menos 1 hora mayor a la hora actual.",
+        );
+        return;
+      }
+
+      // La hora de fin debe ser mayor a la de inicio
+      if (form.end_time <= form.start_time) {
+        setError("La hora de fin debe ser mayor a la hora de inicio.");
+        return;
+      }
       await onSave(form);
       onClose();
     } catch {
