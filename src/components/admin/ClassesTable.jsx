@@ -88,44 +88,47 @@ function ClassCard({ cls, onEdit, onDelete }) {
         >
           {cls.instructor} · {ROOMS[cls.room_id] || "—"}
         </span>
+        {status !== "Finalizada" && (
+          <>
+            <button
+              onClick={() => onEdit(cls)}
+              style={{
+                background: "#0a2a2a",
+                border: "1px solid #1a4a4a",
+                color: "#00e5ff",
+                borderRadius: 4,
+                width: 30,
+                height: 30,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                flexShrink: 0,
+              }}
+            >
+              <IconEdit />
+            </button>
 
-        <button
-          onClick={() => onEdit(cls)}
-          style={{
-            background: "#0a2a2a",
-            border: "1px solid #1a4a4a",
-            color: "#00e5ff",
-            borderRadius: 4,
-            width: 30,
-            height: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            flexShrink: 0,
-          }}
-        >
-          <IconEdit />
-        </button>
-
-        <button
-          onClick={() => onDelete(cls.id)}
-          style={{
-            background: "#2a0a0a",
-            border: "1px solid #4a1a1a",
-            color: "#ff4444",
-            borderRadius: 4,
-            width: 30,
-            height: 30,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            flexShrink: 0,
-          }}
-        >
-          <IconDelete />
-        </button>
+            <button
+              onClick={() => onDelete(cls.id)}
+              style={{
+                background: "#2a0a0a",
+                border: "1px solid #4a1a1a",
+                color: "#ff4444",
+                borderRadius: 4,
+                width: 30,
+                height: 30,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                flexShrink: 0,
+              }}
+            >
+              <IconDelete />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
