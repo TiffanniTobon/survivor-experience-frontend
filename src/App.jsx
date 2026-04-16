@@ -2,10 +2,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import LoginPage from "@/pages/LoginPage";
-
-// Placeholders — los crearemos en próximos pasos
+import AdminPage from "@/pages/AdminPage";
 import ClassesPage from "@/pages/ClassesPage";
-const AdminPage = () => <div className="text-white p-8">Admin (próximo)</div>;
+import CyclingMapPage from "@/pages/CyclingMapPage";
+import CardioStepMapPage from "@/pages/CardioStepMapPage";
+import AdminLayout from "@/layouts/AdminLayout";
 
 export default function App() {
   return (
@@ -24,15 +25,21 @@ export default function App() {
             }
           />
 
-          {/* Rutas protegidas admin */}
+          {/* Rutas admin — todas dentro del AdminLayout */}
           <Route
-            path="/admin"
             element={
               <ProtectedRoute role="admin">
-                <AdminPage />
+                <AdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/cycling-map" element={<CyclingMapPage />} />
+            <Route
+              path="/admin/cardio-step-map"
+              element={<CardioStepMapPage />}
+            />
+          </Route>
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/login" replace />} />
