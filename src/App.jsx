@@ -7,6 +7,9 @@ import ClassesPage from "@/pages/ClassesPage";
 import CyclingMapPage from "@/pages/CyclingMapPage";
 import CardioStepMapPage from "@/pages/CardioStepMapPage";
 import AdminLayout from "@/layouts/AdminLayout";
+import UserLayout from "@/layouts/UserLayout";
+import UserReservationsPage from "@/pages/UserReservationsPage";
+import ReservePage from "@/pages/ReservePage";
 
 export default function App() {
   return (
@@ -15,17 +18,20 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Rutas protegidas usuario */}
+          {/* Rutas usuario — dentro del UserLayout */}
           <Route
-            path="/classes"
             element={
               <ProtectedRoute>
-                <ClassesPage />
+                <UserLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/classes" element={<ClassesPage />} />
+            <Route path="/reservations" element={<UserReservationsPage />} />
+            <Route path="/reserve/:classId" element={<ReservePage />} />
+          </Route>
 
-          {/* Rutas admin — todas dentro del AdminLayout */}
+          {/* Rutas admin — dentro del AdminLayout */}
           <Route
             element={
               <ProtectedRoute role="admin">

@@ -18,7 +18,7 @@ export default function AdminLayout() {
     return "clases";
   };
 
-  const handleCreateClass = () => navigate("/admin");
+  const handleCreateClass = () => navigate("/admin?action=create");
 
   return (
     <>

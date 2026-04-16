@@ -11,9 +11,12 @@ import {
   deleteClassRequest,
 } from "@/services/classService";
 import Toast from "@/components/ui/Toast";
+import { useSearchParams } from "react-router-dom";
 
 export default function AdminPage() {
   const isMobile = useIsMobile();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [weekOffset, setWeekOffset] = useState(0);
   const [selectedDayIndex, setSelectedDayIndex] = useState(() => {
@@ -32,6 +35,15 @@ export default function AdminPage() {
   const weekDays = getWeekDays(monday);
   const selectedDate = weekDays[selectedDayIndex];
   const isSelectedDayPast = toISODate(selectedDate) < toISODate(new Date());
+
+  //Estados
+  useEffect(() => {
+    if (searchParams.get("action") === "create") {
+      setEditingClass(null);
+      setModalOpen(true);
+      setSearchParams({});
+    }
+  }, [searchParams]);
 
   // ─── FETCH ────────────────────────────────────────────────────────────
   const fetchClasses = async () => {
@@ -121,7 +133,7 @@ export default function AdminPage() {
               marginBottom: 0,
             }}
           >
-            ADMIN DASHBOARD
+            El mejor gym de Buenos Aires
           </p>
         </div>
       )}

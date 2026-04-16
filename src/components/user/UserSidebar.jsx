@@ -3,12 +3,11 @@ import { useAuth } from "@/context/AuthContext";
 import useIsMobile from "@/hooks/useIsMobile";
 
 const NAV_ITEMS = [
-  { label: "Gestión de Clases", tab: "clases", path: "/admin" },
-  { label: "Cycling Map", tab: "cycling", path: "/admin/cycling-map" },
-  { label: "Cardio Step Map", tab: "cardio", path: "/admin/cardio-step-map" },
+  { label: "Cronograma", tab: "classes", path: "/classes" },
+  { label: "Mis Reservas", tab: "reservations", path: "/reservations" },
 ];
 
-export default function AdminSidebar({ onCreateClass, disableCreate }) {
+export default function UserSidebar() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,11 +18,9 @@ export default function AdminSidebar({ onCreateClass, disableCreate }) {
     navigate("/login");
   };
 
-  // Determina el tab activo según la URL actual
   const getActiveTab = () => {
-    if (location.pathname.includes("cycling-map")) return "cycling";
-    if (location.pathname.includes("cardio-step-map")) return "cardio";
-    return "clases";
+    if (location.pathname.includes("reservations")) return "reservations";
+    return "classes";
   };
 
   const activeTab = getActiveTab();
@@ -102,36 +99,8 @@ export default function AdminSidebar({ onCreateClass, disableCreate }) {
         })}
       </nav>
 
-      {/* Parte inferior */}
-      <div
-        style={{
-          padding: "0 16px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-        }}
-      >
-        <button
-          onClick={onCreateClass}
-          disabled={disableCreate}
-          style={{
-            background: "#00e5ff",
-            border: "none",
-            color: "#040d0d",
-            borderRadius: 6,
-            padding: "10px 0",
-            fontFamily: "'Orbitron', sans-serif",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: 1,
-            width: "100%",
-            opacity: disableCreate ? 0.3 : 1,
-            cursor: disableCreate ? "not-allowed" : "pointer",
-          }}
-        >
-          + CREAR CLASE
-        </button>
-
+      {/* Cerrar sesión */}
+      <div style={{ padding: "0 16px" }}>
         <button
           onClick={handleLogout}
           style={{
