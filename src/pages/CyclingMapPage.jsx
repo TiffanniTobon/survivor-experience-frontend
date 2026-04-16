@@ -10,11 +10,6 @@ export default function CyclingMapPage() {
 
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600&display=swap"
-        rel="stylesheet"
-      />
-
       <div
         style={{
           minHeight: "100vh",
@@ -27,18 +22,20 @@ export default function CyclingMapPage() {
           <button
             onClick={() => navigate("/admin")}
             style={{
-              background: "transparent",
-              border: "none",
+              background: "#0a2a2a",
+              border: "1px solid #1a4a4a",
               color: "#00e5ff",
+              borderRadius: 8,
+              padding: "8px 16px",
               fontFamily: "'Rajdhani', sans-serif",
-              fontSize: 14,
-              cursor: "pointer",
+              fontSize: 13,
+              fontWeight: 600,
               letterSpacing: 1,
+              cursor: "pointer",
               marginBottom: 24,
               display: "flex",
               alignItems: "center",
-              gap: 6,
-              padding: 0,
+              gap: 8,
             }}
           >
             ← Volver al panel

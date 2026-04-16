@@ -81,19 +81,25 @@ export default function AdminBottomBar({
       }}
     >
       {/* Gestión de Clases */}
-      <button style={tabStyle("clases")}>
+      <button onClick={() => navigate("/admin")} style={tabStyle("clases")}>
         <IconClases />
         <span>Clases</span>
       </button>
 
       {/* Cycling Map */}
-      <button style={tabStyle("cycling")}>
+      <button
+        onClick={() => navigate("/admin/cycling-map")}
+        style={tabStyle("cycling")}
+      >
         <IconCycling />
         <span>Cycling</span>
       </button>
 
       {/* Cardio Step Map */}
-      <button style={tabStyle("cardio")}>
+      <button
+        onClick={() => navigate("/admin/cardio-step-map")}
+        style={tabStyle("cardio")}
+      >
         <IconCardio />
         <span>Cardio</span>
       </button>

@@ -1,17 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import useIsMobile from "@/hooks/useIsMobile";
 
 const NAV_ITEMS = [
-  { label: "Gestión de Clases", active: true },
-  { label: "Cycling Map", active: false },
-  { label: "Cardio Step Map", active: false },
+  { label: "Gestión de Clases", tab: "clases", path: "/admin" },
+  { label: "Cycling Map", tab: "cycling", path: "/admin/cycling-map" },
+  { label: "Cardio Step Map", tab: "cardio", path: "/admin/cardio-step-map" },
 ];
 
-// Recibe onCreateClass para abrir el modal desde AdminPage
 export default function AdminSidebar({ onCreateClass, disableCreate }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useIsMobile();
 
   const handleLogout = () => {
@@ -19,7 +19,15 @@ export default function AdminSidebar({ onCreateClass, disableCreate }) {
     navigate("/login");
   };
 
-  // En móvil el sidebar no se muestra
+  // Determina el tab activo según la URL actual
+  const getActiveTab = () => {
+    if (location.pathname.includes("cycling-map")) return "cycling";
+    if (location.pathname.includes("cardio-step-map")) return "cardio";
+    return "clases";
+  };
+
+  const activeTab = getActiveTab();
+
   if (isMobile) return null;
 
   return (
@@ -67,26 +75,31 @@ export default function AdminSidebar({ onCreateClass, disableCreate }) {
 
       {/* Navegación */}
       <nav style={{ flex: 1 }}>
-        {NAV_ITEMS.map(({ label, active }) => (
-          <div
-            key={label}
-            style={{
-              padding: "12px 24px",
-              cursor: "pointer",
-              background: active ? "#00e5ff18" : "transparent",
-              borderLeft: active
-                ? "3px solid #00e5ff"
-                : "3px solid transparent",
-              color: active ? "#00e5ff" : "#336666",
-              fontFamily: "'Rajdhani', sans-serif",
-              fontSize: 14,
-              fontWeight: active ? 600 : 400,
-              letterSpacing: 1,
-            }}
-          >
-            {label}
-          </div>
-        ))}
+        {NAV_ITEMS.map(({ label, tab, path }) => {
+          const isActive = activeTab === tab;
+          return (
+            <div
+              key={tab}
+              onClick={() => navigate(path)}
+              style={{
+                padding: "12px 24px",
+                cursor: "pointer",
+                background: isActive ? "#00e5ff18" : "transparent",
+                borderLeft: isActive
+                  ? "3px solid #00e5ff"
+                  : "3px solid transparent",
+                color: isActive ? "#00e5ff" : "#336666",
+                fontFamily: "'Rajdhani', sans-serif",
+                fontSize: 14,
+                fontWeight: isActive ? 600 : 400,
+                letterSpacing: 1,
+                transition: "all 0.15s",
+              }}
+            >
+              {label}
+            </div>
+          );
+        })}
       </nav>
 
       {/* Parte inferior */}
@@ -111,7 +124,6 @@ export default function AdminSidebar({ onCreateClass, disableCreate }) {
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: 1,
-            cursor: "pointer",
             width: "100%",
             opacity: disableCreate ? 0.3 : 1,
             cursor: disableCreate ? "not-allowed" : "pointer",
