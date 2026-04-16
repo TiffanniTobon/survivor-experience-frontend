@@ -1,5 +1,12 @@
 import { ROOMS, STATUS_COLORS, getStatus } from "@/utils/classHelpers";
 import useIsMobile from "@/hooks/useIsMobile";
+import { useNavigate } from "react-router-dom";
+
+const IconMap = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+    <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z" />
+  </svg>
+);
 
 const IconEdit = () => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -15,8 +22,17 @@ const IconDelete = () => (
 
 // ── Vista móvil: tarjetas ─────────────────────────────────────────────
 function ClassCard({ cls, onEdit, onDelete }) {
+  const navigate = useNavigate();
   const status = getStatus(cls.date, cls.start_time, cls.end_time);
   const sc = STATUS_COLORS[status];
+
+  const handleViewMap = () => {
+    const route =
+      cls.room_id === 1
+        ? `/admin/cycling-map?classId=${cls.id}`
+        : `/admin/cardio-step-map?classId=${cls.id}`;
+    navigate(route);
+  };
 
   return (
     <div
@@ -88,6 +104,28 @@ function ClassCard({ cls, onEdit, onDelete }) {
         >
           {cls.instructor} · {ROOMS[cls.room_id] || "—"}
         </span>
+
+        {/* Ver mapa — solo Cycling y Cardio Step */}
+        {(cls.room_id === 1 || cls.room_id === 2) && (
+          <button
+            onClick={handleViewMap}
+            style={{
+              background: "#0a1a2a",
+              border: "1px solid #1a4a6a",
+              color: "#00e5ff",
+              borderRadius: 4,
+              width: 30,
+              height: 30,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              flexShrink: 0,
+            }}
+          >
+            <IconMap />
+          </button>
+        )}
         {status !== "Finalizada" && (
           <>
             <button
@@ -136,8 +174,18 @@ function ClassCard({ cls, onEdit, onDelete }) {
 
 // ── Vista desktop: tabla ──────────────────────────────────────────────
 function ClassRow({ cls, onEdit, onDelete, isLast }) {
+  const navigate = useNavigate();
   const status = getStatus(cls.date, cls.start_time, cls.end_time);
   const sc = STATUS_COLORS[status];
+
+  // Navega al mapa según el salón de la clase
+  const handleViewMap = () => {
+    const route =
+      cls.room_id === 1
+        ? `/admin/cycling-map?classId=${cls.id}`
+        : `/admin/cardio-step-map?classId=${cls.id}`;
+    navigate(route);
+  };
 
   return (
     <div
@@ -209,6 +257,23 @@ function ClassRow({ cls, onEdit, onDelete, isLast }) {
         {status}
       </span>
       <div style={{ display: "flex", gap: 8, justifyContent: "flex-start" }}>
+        {(cls.room_id === 1 || cls.room_id === 2) && (
+          <button
+            onClick={handleViewMap}
+            style={{
+              background: "#0a1a2a",
+              border: "1px solid #1a4a6a",
+              color: "#00e5ff",
+              borderRadius: 4,
+              padding: "4px 10px",
+              cursor: "pointer",
+              fontFamily: "'Rajdhani', sans-serif",
+              fontSize: 12,
+            }}
+          >
+            Ver mapa
+          </button>
+        )}
         {status !== "Finalizada" && (
           <>
             <button

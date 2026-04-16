@@ -4,6 +4,8 @@ import ProtectedRoute from "@/routes/ProtectedRoute";
 import LoginPage from "@/pages/LoginPage";
 import AdminPage from "@/pages/AdminPage";
 import ClassesPage from "@/pages/ClassesPage";
+import CyclingMapPage from "@/pages/CyclingMapPage";
+import CardioStepMapPage from "@/pages/CardioStepMapPage";
 
 export default function App() {
   return (
@@ -31,7 +33,23 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
+          {/* Mapas de salones — solo admin */}
+          <Route
+            path="/admin/cycling-map"
+            element={
+              <ProtectedRoute role="admin">
+                <CyclingMapPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/cardio-step-map"
+            element={
+              <ProtectedRoute role="admin">
+                <CardioStepMapPage />
+              </ProtectedRoute>
+            }
+          />
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
