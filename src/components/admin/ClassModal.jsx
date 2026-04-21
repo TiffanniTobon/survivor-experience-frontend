@@ -15,7 +15,13 @@ const EMPTY_FORM = {
   end_time: "",
 };
 
-export default function ClassModal({ isOpen, onClose, onSave, initial }) {
+export default function ClassModal({
+  isOpen,
+  onClose,
+  onSave,
+  initial,
+  defaultDate,
+}) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +33,11 @@ export default function ClassModal({ isOpen, onClose, onSave, initial }) {
 
   useEffect(() => {
     if (!isOpen) return;
-    setForm(initial || EMPTY_FORM);
+    setForm({
+      ...EMPTY_FORM,
+      date: defaultDate || "",
+      ...(initial || {}),
+    });
     setError("");
     setFieldErrors({});
 
@@ -97,8 +107,13 @@ export default function ClassModal({ isOpen, onClose, onSave, initial }) {
     try {
       await onSave(form);
       onClose();
-    } catch {
-      setError("Error al guardar la clase. Intenta de nuevo.");
+    } catch (err) {
+      const msg = err.response?.data?.message;
+      if (msg === "Room is already occupied at that time") {
+        setError("El salón ya tiene una clase programada en ese horario.");
+      } else {
+        setError("Error al guardar la clase. Intenta de nuevo.");
+      }
     } finally {
       setLoading(false);
     }

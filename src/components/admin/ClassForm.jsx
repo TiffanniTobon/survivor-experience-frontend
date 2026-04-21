@@ -24,11 +24,18 @@ const labelStyle = {
   display: "block",
 };
 
-// Calcula la hora mínima permitida (1 hora desde ahora)
-const getMinTime = () => {
-  const now = new Date();
-  now.setHours(now.getHours() + 1);
-  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+// Genera horas disponibles según el horario del gym
+const getAvailableHours = (date) => {
+  if (!date) return [];
+  const day = new Date(date + "T00:00:00").getDay();
+  const isWeekend = day === 0 || day === 6;
+  const start = isWeekend ? 8 : 5;
+  const end = isWeekend ? 14 : 21;
+  const hours = [];
+  for (let h = start; h <= end; h++) {
+    hours.push(`${String(h).padStart(2, "0")}:00`);
+  }
+  return hours;
 };
 
 // Recibe:
@@ -116,25 +123,37 @@ export default function ClassForm({
       <div style={{ display: "flex", gap: 12 }}>
         <div style={{ flex: 1 }}>
           <label style={labelStyle}>Hora inicio</label>
-          <input
-            type="time"
+          <select
             name="start_time"
             value={form.start_time}
             onChange={onChange}
-            min={isToday ? getMinTime() : undefined}
             style={getInputStyle(fieldErrors, "start_time")}
-          />
+          >
+            <option value="">Selecciona</option>
+            {getAvailableHours(form.date).map((h) => (
+              <option key={h} value={h}>
+                {h}
+              </option>
+            ))}
+          </select>
         </div>
         <div style={{ flex: 1 }}>
           <label style={labelStyle}>Hora fin</label>
-          <input
-            type="time"
+          <select
             name="end_time"
             value={form.end_time}
             onChange={onChange}
-            min={form.start_time || undefined}
             style={getInputStyle(fieldErrors, "end_time")}
-          />
+          >
+            <option value="">Selecciona</option>
+            {getAvailableHours(form.date)
+              .filter((h) => !form.start_time || h > form.start_time)
+              .map((h) => (
+                <option key={h} value={h}>
+                  {h}
+                </option>
+              ))}
+          </select>
         </div>
       </div>
     </div>

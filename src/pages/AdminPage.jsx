@@ -194,6 +194,7 @@ export default function AdminPage() {
         onClose={() => setModalOpen(false)}
         onSave={handleSave}
         initial={editingClass}
+        defaultDate={toISODate(selectedDate)}
       />
       <ConfirmModal
         isOpen={deleteModal.isOpen}
