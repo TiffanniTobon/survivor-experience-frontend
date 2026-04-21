@@ -5,7 +5,8 @@ import {
 } from "@/services/reservationService";
 import useIsMobile from "@/hooks/useIsMobile";
 import Toast from "@/components/ui/Toast";
-import { ROOMS } from "@/utils/classHelpers";
+import { ROOMS, getStatus } from "@/utils/classHelpers";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function UserReservationsPage() {
   const isMobile = useIsMobile();
@@ -13,6 +14,11 @@ export default function UserReservationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [toast, setToast] = useState(null);
+
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    reservationId: null,
+  });
 
   const showToast = (message, type = "success") => setToast({ message, type });
 
@@ -33,10 +39,9 @@ export default function UserReservationsPage() {
     fetchReservations();
   }, []);
 
-  const handleCancel = async (id) => {
-    if (!window.confirm("¿Cancelar esta reserva?")) return;
+  const handleCancel = async () => {
     try {
-      await cancelReservationRequest(id);
+      await cancelReservationRequest(confirmModal.reservationId);
       showToast("Reserva cancelada correctamente", "error");
       await fetchReservations();
     } catch {
@@ -121,7 +126,7 @@ export default function UserReservationsPage() {
             marginBottom: 0,
           }}
         >
-          Tus clases reservadas activas
+          Tus clases reservadas recientemente
         </p>
       </div>
 
@@ -219,28 +224,41 @@ export default function UserReservationsPage() {
                 </p>
               </div>
 
-              {/* Botón cancelar */}
-              <button
-                onClick={() => handleCancel(r.id)}
-                style={{
-                  background: "#2a0a0a",
-                  border: "1px solid #4a1a1a",
-                  color: "#ff4444",
-                  borderRadius: 6,
-                  padding: isMobile ? "6px 12px" : "6px 16px",
-                  cursor: "pointer",
-                  fontFamily: "'Rajdhani', sans-serif",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  flexShrink: 0,
-                }}
-              >
-                Cancelar
-              </button>
+              {/* Botón cancelar — solo si la clase no ha finalizado */}
+              {getStatus(r.date, r.start_time, r.end_time) !== "Finalizada" && (
+                <button
+                  onClick={() =>
+                    setConfirmModal({ isOpen: true, reservationId: r.id })
+                  }
+                  style={{
+                    background: "#2a0a0a",
+                    border: "1px solid #4a1a1a",
+                    color: "#ff4444",
+                    borderRadius: 6,
+                    padding: isMobile ? "6px 12px" : "6px 16px",
+                    cursor: "pointer",
+                    fontFamily: "'Rajdhani', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    flexShrink: 0,
+                  }}
+                >
+                  Cancelar
+                </button>
+              )}
             </div>
           ))}
         </div>
       )}
+      <ConfirmModal
+        isOpen={confirmModal.isOpen}
+        title="¿Cancelar reserva?"
+        message="Se cancelará tu lugar en esta clase. Esta acción no se puede deshacer."
+        confirmLabel="Cancelar reserva"
+        confirmColor="danger"
+        onConfirm={handleCancel}
+        onClose={() => setConfirmModal({ isOpen: false, reservationId: null })}
+      />
 
       <Toast
         message={toast?.message}

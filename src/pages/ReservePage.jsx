@@ -3,6 +3,7 @@ import { useState } from "react";
 import RoomMap from "@/components/admin/RoomMap";
 import { createReservationRequest } from "@/services/reservationService";
 import Toast from "@/components/ui/Toast";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 import useIsMobile from "@/hooks/useIsMobile";
 
 export default function ReservePage() {
@@ -15,6 +16,8 @@ export default function ReservePage() {
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const showToast = (message, type = "success") => setToast({ message, type });
 
@@ -80,7 +83,6 @@ export default function ReservePage() {
           </p>
         </div>
       )}
-
       {/* Botón volver */}
       <button
         onClick={() => navigate("/classes")}
@@ -103,7 +105,6 @@ export default function ReservePage() {
       >
         ← Volver al cronograma
       </button>
-
       {/* Encabezado */}
       <div style={{ marginBottom: 32 }}>
         <h1
@@ -131,10 +132,8 @@ export default function ReservePage() {
           Selecciona tu posición para esta clase
         </p>
       </div>
-
       {/* Mapa — con onSelect para que sea interactivo */}
       <RoomMap roomId={roomId} classId={classId} onSelect={handleSelect} />
-
       {/* Posición seleccionada + botón reservar */}
       {selectedPosition && (
         <div
@@ -159,7 +158,7 @@ export default function ReservePage() {
             <strong>{String(selectedPosition.number).padStart(2, "0")}</strong>
           </p>
           <button
-            onClick={handleReserve}
+            onClick={() => setConfirmOpen(true)}
             disabled={loading}
             style={{
               background: "#00e5ff",
@@ -179,6 +178,15 @@ export default function ReservePage() {
           </button>
         </div>
       )}
+      <ConfirmModal
+        isOpen={confirmOpen}
+        title="¿Confirmar reserva?"
+        message={`Vas a reservar la posición ${String(selectedPosition?.number || "").padStart(2, "0")} en ${roomName}. Esta acción bloqueará ese lugar para ti.`}
+        confirmLabel="Confirmar reserva"
+        confirmColor="primary"
+        onConfirm={handleReserve}
+        onClose={() => setConfirmOpen(false)}
+      />
 
       <Toast
         message={toast?.message}

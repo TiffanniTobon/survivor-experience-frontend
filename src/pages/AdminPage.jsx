@@ -12,11 +12,17 @@ import {
 } from "@/services/classService";
 import Toast from "@/components/ui/Toast";
 import { useSearchParams } from "react-router-dom";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function AdminPage() {
   const isMobile = useIsMobile();
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    classId: null,
+  });
 
   const [weekOffset, setWeekOffset] = useState(0);
   const [selectedDayIndex, setSelectedDayIndex] = useState(() => {
@@ -97,9 +103,8 @@ export default function AdminPage() {
     await fetchClasses();
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar esta clase?")) return;
-    await deleteClassRequest(id);
+  const handleDelete = async () => {
+    await deleteClassRequest(deleteModal.classId);
     await fetchClasses();
     showToast("Clase eliminada", "error");
   };
@@ -181,7 +186,7 @@ export default function AdminPage() {
         loading={loading}
         error={error}
         onEdit={handleOpenEdit}
-        onDelete={handleDelete}
+        onDelete={(id) => setDeleteModal({ isOpen: true, classId: id })}
       />
 
       <ClassModal
@@ -190,7 +195,15 @@ export default function AdminPage() {
         onSave={handleSave}
         initial={editingClass}
       />
-
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        title="¿Eliminar clase?"
+        message="Esta acción eliminará la clase permanentemente y no se puede deshacer."
+        confirmLabel="Eliminar clase"
+        confirmColor="danger"
+        onConfirm={handleDelete}
+        onClose={() => setDeleteModal({ isOpen: false, classId: null })}
+      />
       <Toast
         message={toast?.message}
         type={toast?.type}
