@@ -2,10 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import LoginPage from "@/pages/LoginPage";
-
-// Placeholders — los crearemos en próximos pasos
+import AdminPage from "@/pages/AdminPage";
 import ClassesPage from "@/pages/ClassesPage";
-const AdminPage = () => <div className="text-white p-8">Admin (próximo)</div>;
+import CyclingMapPage from "@/pages/CyclingMapPage";
+import CardioStepMapPage from "@/pages/CardioStepMapPage";
+import AdminLayout from "@/layouts/AdminLayout";
+import UserLayout from "@/layouts/UserLayout";
+import UserReservationsPage from "@/pages/UserReservationsPage";
+import ReservePage from "@/pages/ReservePage";
 
 export default function App() {
   return (
@@ -14,25 +18,34 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Rutas protegidas usuario */}
+          {/* Rutas usuario — dentro del UserLayout */}
           <Route
-            path="/classes"
             element={
               <ProtectedRoute>
-                <ClassesPage />
+                <UserLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/classes" element={<ClassesPage />} />
+            <Route path="/reservations" element={<UserReservationsPage />} />
+            <Route path="/reserve/:classId" element={<ReservePage />} />
+          </Route>
 
-          {/* Rutas protegidas admin */}
+          {/* Rutas admin — dentro del AdminLayout */}
           <Route
-            path="/admin"
             element={
               <ProtectedRoute role="admin">
-                <AdminPage />
+                <AdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/cycling-map" element={<CyclingMapPage />} />
+            <Route
+              path="/admin/cardio-step-map"
+              element={<CardioStepMapPage />}
+            />
+          </Route>
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/login" replace />} />
