@@ -7,8 +7,8 @@ import { toISODate } from "@/utils/classHelpers";
 import ClassForm from "@/components/admin/ClassForm";
 
 const EMPTY_FORM = {
-  name: "",
-  instructor: "",
+  class_type_id: "",
+  instructor_id: "",
   room_id: "1",
   date: "",
   start_time: "",
@@ -69,8 +69,8 @@ export default function ClassModal({
   const handleSubmit = async () => {
     // Validación de campos obligatorios
     const errors = {};
-    if (!form.name) errors.name = true;
-    if (!form.instructor) errors.instructor = true;
+    if (!form.class_type_id) errors.class_type_id = true;
+    if (!form.instructor_id) errors.instructor_id = true;
     if (!form.date) errors.date = true;
     if (!form.start_time) errors.start_time = true;
     if (!form.end_time) errors.end_time = true;
