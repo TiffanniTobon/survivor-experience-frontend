@@ -86,6 +86,8 @@ export default function AdminPage() {
     setEditingClass({
       ...cls,
       room_id: String(cls.room_id),
+      class_type_id: String(cls.class_type_id),
+      instructor_id: String(cls.instructor_id),
       start_time: cls.start_time.slice(0, 5),
       end_time: cls.end_time.slice(0, 5),
     });

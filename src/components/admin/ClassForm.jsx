@@ -59,14 +59,14 @@ export default function ClassForm({
       <div>
         <label style={labelStyle}>Nombre de la clase</label>
         <select
-          name="name"
-          value={form.name}
+          name="class_type_id"
+          value={form.class_type_id}
           onChange={onChange}
-          style={getInputStyle(fieldErrors, "name")}
+          style={getInputStyle(fieldErrors, "class_type_id")}
         >
           <option value="">Selecciona una clase</option>
           {classTypes.map((ct) => (
-            <option key={ct.id} value={ct.name}>
+            <option key={ct.id} value={ct.id}>
               {ct.name}
             </option>
           ))}
@@ -77,14 +77,14 @@ export default function ClassForm({
       <div>
         <label style={labelStyle}>Instructor</label>
         <select
-          name="instructor"
-          value={form.instructor}
+          name="instructor_id"
+          value={form.instructor_id}
           onChange={onChange}
-          style={getInputStyle(fieldErrors, "instructor")}
+          style={getInputStyle(fieldErrors, "instructor_id")}
         >
           <option value="">Selecciona un instructor</option>
           {instructors.map((ins) => (
-            <option key={ins.id} value={ins.name}>
+            <option key={ins.id} value={ins.id}>
               {ins.name}
             </option>
           ))}
